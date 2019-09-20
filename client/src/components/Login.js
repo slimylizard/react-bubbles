@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { axiosWithAuth } from "./axiosWithAuth";
+import { Link } from 'react-router-dom';
 
 const state = {
   credentials: {
@@ -8,25 +9,27 @@ const state = {
   }
 }
 
-const Login = () => {
+const Login = (props) => {
   const [creds, setCreds] = useState(state)
 
   const handleChange = e => {
     console.log(e.target)
     setCreds({
-      ...creds,
+      credentials:{
+      ...creds.credentials,
       [e.target.name]: e.target.value 
+      }
     })
   }
 
   const login = e => {
-    console.log(creds, e)
+    console.log(creds,creds.credentials,)
     e.preventDefault();
     axiosWithAuth().post ('/api/login', creds.credentials)
     .then(res => {
-      console.log(res)
-      localStorage.setItem('token', res.data.token);
-      e.history.push('/protected');
+      console.log(res, )
+      localStorage.setItem('token', res.data.payload);
+      props.history.push('/protected');
     })
     .catch(err => console.log(err));
   }
