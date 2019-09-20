@@ -9,7 +9,7 @@ const state = {
 }
 
 const Login = () => {
-  const [creds, setCreds] = useState([])
+  const [creds, setCreds] = useState(state)
 
   const handleChange = e => {
     console.log(e.target)
@@ -25,7 +25,7 @@ const Login = () => {
     axiosWithAuth().post ('/api/login', creds.credentials)
     .then(res => {
       console.log(res)
-      localStorage.setItem('token', res.data.payload);
+      localStorage.setItem('token', res.data.token);
       e.history.push('/protected');
     })
     .catch(err => console.log(err));
